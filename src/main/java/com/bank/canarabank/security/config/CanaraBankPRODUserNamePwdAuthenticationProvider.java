@@ -13,8 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("!prod")
-public class CanaraBankUserNamePwdAuthenticationProvider implements AuthenticationProvider {
+@Profile("prod")
+public class CanaraBankPRODUserNamePwdAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private CanaraBankUserDetailsService canaraBankUserDetailsService;
@@ -28,13 +28,12 @@ public class CanaraBankUserNamePwdAuthenticationProvider implements Authenticati
         String pwd = (String) authentication.getCredentials();
 
         UserDetails userDetails = canaraBankUserDetailsService.loadUserByUsername(uname);
-        //Commenting to check Profiles concept - so this will not Check Password to lower env
-        ///if (passwordEncoder.matches(pwd, userDetails.getPassword())) {
+        if (passwordEncoder.matches(pwd, userDetails.getPassword())) {
             //Our Custom login for authentication we can write here.
             return new UsernamePasswordAuthenticationToken(uname, pwd, userDetails.getAuthorities());
-        /*} else {
+        } else {
             throw new BadCredentialsException("InValid Password");
-        }*/
+        }
 
     }
 
