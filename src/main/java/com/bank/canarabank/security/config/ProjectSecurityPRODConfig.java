@@ -1,5 +1,6 @@
 package com.bank.canarabank.security.config;
 
+import com.bank.canarabank.filter.RequestValidationBeforeFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.sql.DataSource;
 
@@ -25,6 +27,7 @@ public class ProjectSecurityPRODConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
         http.csrf(hscc -> hscc.disable())
+                .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
         .authorizeHttpRequests(req -> req.requestMatchers("/myAccount").hasAuthority("VIEWACCOUNTS")
                 /*.requestMatchers("/myBalance").hasAuthority("VIEWBALANCE")
                 .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
