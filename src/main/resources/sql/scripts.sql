@@ -21,6 +21,28 @@ create table customer(
     role varchar(45) NOT NULL,
     primary key (id)
 )
-insert into customer(email, pwd, role) values('yogesh@gmail.com', '{bcrypt}$2a$12$cLAf843dpihKWq87chZqSeuXPeiz7Dk.1uQMp82AgtmG06DPd1G0C', 'read');
-insert into customer(email, pwd, role) values('sonali@gmail.com', '{bcrypt}$2a$12$DViqAwM610kXsCvMo62PKe1iS.dr4qTJ3uej7i4hCdK/dmkfC0qsO', 'read');
-insert into customer(email, pwd, role) values('admin@gmail.com', '{bcrypt}$2a$12$4be08v2aEx7hyy3Yym1ffeTiKBW5is810wp/jsEfw5XknMROgVPPK', 'admin');
+insert into customer(email, pwd, role) values('yogesh@gmail.com', '{bcrypt}$2a$12$cLAf843dpihKWq87chZqSeuXPeiz7Dk.1uQMp82AgtmG06DPd1G0C', 'read');//Yogesh
+insert into customer(email, pwd, role) values('sonali@gmail.com', '{bcrypt}$2a$12$DViqAwM610kXsCvMo62PKe1iS.dr4qTJ3uej7i4hCdK/dmkfC0qsO', 'read');//Sonali
+insert into customer(email, pwd, role) values('admin@gmail.com', '{bcrypt}$2a$12$4be08v2aEx7hyy3Yym1ffeTiKBW5is810wp/jsEfw5XknMROgVPPK', 'admin');//Admin
+
+//========================================================================================================================================================
+CREATE TABLE authorities (
+    id int NOT NULL AUTO_INCREMENT,
+    customer_id int NOT NULL,
+    name varchar(50) NOT NULL,
+    PRIMARY KEY(id),
+    KEY customer_id(customer_id),
+    CONSTRAINT auth_ibfk_1 FOREIGN KEY(customer_id) REFERENCES customer (id)
+)
+
+
+select * from  authorities;
+
+insert into authorities (customer_id, name) values (4, 'VIEWLOANS');
+insert into authorities (customer_id, name) values (4, 'VIEWACCOUNTS');
+insert into authorities (customer_id, name) values (4, 'VIEWCARDS');
+
+--UPDATE authorities set name='VIEWBALANCE' WHERE id=1;
+
+insert into authorities (customer_id, name) values (4, 'VIEWACCOUNTS');
+insert into authorities (customer_id, name) values (4, 'VIEWCARDS');
