@@ -23,7 +23,11 @@ public class ProjectSecurityPRODConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
         http.csrf(hscc -> hscc.disable())
-        .authorizeHttpRequests(req -> req.requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
+        .authorizeHttpRequests(req -> req.requestMatchers("/myAccount").hasAuthority("VIEWACCOUNTS")
+                .requestMatchers("/myBalance").hasAuthority("VIEWBALANCE")
+                .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
+                .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+                .requestMatchers("/user").authenticated()
                 .requestMatchers("/contact", "/notices", "/register").permitAll());
 
         http.formLogin(withDefaults());
