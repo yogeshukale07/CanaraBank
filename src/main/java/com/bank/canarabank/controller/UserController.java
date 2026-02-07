@@ -1,11 +1,14 @@
 package com.bank.canarabank.controller;
 
+import com.bank.canarabank.ApplicationConstants;
 import com.bank.canarabank.model.Customer;
 import com.bank.canarabank.repository.CustomerRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.method.AuthorizeReturnObject;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,5 +32,11 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An Exception occured : "+ e.getMessage());
         }
+    }
+
+    @PostMapping("/generateToken")
+    public ResponseEntity<String> generateToken(HttpServletResponse res) {
+        String jwtToken = res.getHeader(ApplicationConstants.JWT_AUTHORIZATION_HEADER);
+        return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
     }
 }
